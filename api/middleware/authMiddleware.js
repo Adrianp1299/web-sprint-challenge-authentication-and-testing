@@ -4,7 +4,7 @@ const checkNameExists = async (req, res, next) => {
     try{
         const [user] = await Auth.findBy({ username: req.body.username})
         if (user) {
-          next ({status: 403, message: 'Name already Exists'})
+          next ({status: 403, message: 'username taken'})
         }else {
           next()
         }

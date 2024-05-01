@@ -34,7 +34,7 @@ describe("auth-router testing", () => {
     it("(2)username has to be unique", async () => {
       await request(server).post('/api/auth/register').send(user1)
       const res = await request(server).post('/api/auth/register').send(userRepeat)
-      expect(res.body.message).toMatch(/Name already Exists/i)
+      expect(res.body.message).toMatch(/username taken/i)
     })
   })
   describe("post login endpoint", () => {
