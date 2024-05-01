@@ -25,7 +25,7 @@ afterAll(async ()=>{
 })
 
 describe("auth-router testing", () => {
-  describe("post endpoint", () => {
+  describe("post register endpoint", () => {
     it("(1)register user", async ()=> {
       const res = await request(server).post('/api/auth/register').send(user1)
       const hashPassword = await db('users').where('username', 'Adrian').first()
@@ -35,6 +35,17 @@ describe("auth-router testing", () => {
       await request(server).post('/api/auth/register').send(user1)
       const res = await request(server).post('/api/auth/register').send(userRepeat)
       expect(res.body.message).toMatch(/Name already Exists/i)
+    })
+  })
+  describe("post login endpoint", () => {
+    it("(3)login in user", async () => {
+      await request(server).post('/api/auth/register').send(user1)
+      const res = await request(server).post('/api/auth/login').send(user1)
+      expect(res.body.message).toMatch(/welcome, Adrian/i)
+    })
+    it("(4)correct error message on no username/password", async () => {
+      const res = await request(server).post('/api/auth/login').send()
+      expect(res.body.message).toMatch(/username and password required/i)
     })
   })
 })
